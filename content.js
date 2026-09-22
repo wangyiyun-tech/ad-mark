@@ -102,7 +102,9 @@
     return tag === 'LI' || /(^|[-_])(hot-rank|rank\d+|fz-mid)([-_]|$)/.test(cls);
   }
 
-  /* 从徽标向上找「结果条目容器」：有链接、高度合理；找不到就返回 null 不标 */
+  /* 从徽标向上找「结果条目容器」：有链接、高度合理；找不到就返回 null 不标。
+   * 只认最小的那张卡片——宁可少标也不把整块版面（可能含多个条目）圈进来，
+   * 否则红牌会挂到官方标注所属条目之外的元素上，看起来像标错对象。 */
   function container(badge) {
     var el = badge;
     var fallback = null;
@@ -114,8 +116,8 @@
         if (!fallback) fallback = el;
         /* 热搜/榜单行通常只有 1 个链接且高度很小，优先取这一行，
          * 不要一路爬到包含 20 条热搜的整块侧栏。 */
-        if (isRankRow(el) || (h <= 260 && linkCount <= 8)) return el;
-        if (h >= 32 && linkCount <= 12) return el;
+        if (isRankRow(el) || (h <= 260 && linkCount <= 4)) return el;
+        if (h >= 32 && linkCount <= 6) return el;
       }
       el = el.parentElement;
     }
