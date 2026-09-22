@@ -134,7 +134,7 @@
     badge.textContent = BADGE_TEXT;
     badge.setAttribute('role', 'note');
     badge.setAttribute('aria-label', DISCLAIMER);
-    badge.setAttribute('title', DISCLAIMER);
+    /* 不设 title 属性：会触发浏览器原生白色提示，和自绘说明框重复 */
     if (isRankRow(el)) badge.setAttribute('data-ppm-compact', '1');
 
     var tip = null;
