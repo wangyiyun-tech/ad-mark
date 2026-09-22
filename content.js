@@ -26,13 +26,18 @@
     '本标记仅辅助区分付费推广：该条目是网页自带的推广标识（网站自己标注的「广告 / 推广 / 赞助」等）。';
   var BADGE_TEXT = '广告';
 
-  /* 常见的网页自带推广标签（小写比较；长度上限防误伤长句） */
+  /* 常见的网页自带推广标签（小写比较；长度上限防误伤长句）。
+   * 注意：不含 'ad' / 'ads' 这类过短的词——它们会误伤 ad-mark、advertising
+   * 等正常词汇；官方广告标注基本都是「广告 / 赞助 / Sponsored」这类完整词。 */
   var WORDS = [
     '广告', '广告位', '广告推广', '推广', '推广位', '推广链接',
     '赞助', '赞助商', '商业广告', '商业推广',
     'sponsored', 'sponsoredcontent', 'promoted', 'promotion',
-    'ad', 'ads', 'advertisement', 'anzeige', '広告'
+    'advertisement', 'anzeige', '広告'
   ];
+  /* 强特征词：只允许出现在「很短的标注文本」里做包含匹配（如「百度广告」），
+   * 长文本（如 ad-mark、advertising、付费推广标记（辅助））一律不算，防止误伤。 */
+  var STRONG = ['广告', '推广', '赞助', 'sponsored', 'promoted', 'tuiguang', 'guanggao'];
   /* 站点专属的推广标记（语义属性与 class 由下方通用扫描统一处理，避免把整块侧栏当成一条广告） */
   var SPECIAL_SEL = [
     '.ec-tuiguang', '[data-tuiguang]', '.c-icon-bear-circle',
@@ -52,7 +57,16 @@
       var value = (el.getAttribute(LABEL_ATTRS[i]) || '').trim().toLowerCase().replace(/\s+/g, '');
       if (!value || value.length > 24) continue;
       for (var j = 0; j < WORDS.length; j++) {
-        if (value === WORDS[j] || value.indexOf(WORDS[j]) !== -1) return true;
+        /* 精确匹配：aria-label / title 必须正好是「广告 / 赞助 / Sponsored」这类
+         * 官方标签；包含式判断会误伤 ad-mark、advertising、付费推广标记（辅助）等 */
+        if (value === WORDS[j]) return true;
+      }
+      /* 极短标注（≤6 字符）里出现强特征词才算（如「百度广告」）；
+       * 长词组一律不算，避免把功能入口当成推广标注 */
+      if (value.length <= 6) {
+        for (var k = 0; k < STRONG.length; k++) {
+          if (value.indexOf(STRONG[k]) !== -1) return true;
+        }
       }
     }
     var cls = typeof el.className === 'string' ? el.className.toLowerCase() : '';

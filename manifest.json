@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "付费推广标记（辅助）",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "在本地页面辅助标出疑似付费推广/广告条目：仅在本地叠加一小块提示，不拦截、不屏蔽、不修改网页广告内容，不拦截广告点击、不篡改广告数据。可选安装，随时可卸载。",
   "browser_specific_settings": {
     "gecko": {
