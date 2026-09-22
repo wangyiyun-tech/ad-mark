@@ -1,0 +1,42 @@
+/* 付费推广标记（辅助） · 注入样式：只新增两个自有 class，不改动网页既有元素样式 */
+.ppm-badge {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 44px;
+  height: 20px;
+  box-sizing: border-box;
+  background: #e02e2e;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 3px 3px 0 0;
+  z-index: 2147483647;
+  cursor: help;
+  font-family: system-ui, -apple-system, "Segoe UI", "HarmonyOS Sans SC", "Noto Sans SC", Roboto, sans-serif;
+  letter-spacing: 2px;
+  text-indent: 2px;
+}
+
+/* 搜狗/其他榜单行右侧通常还有「260.3万」之类的热度数值，给它留出位置。 */
+.ppm-badge[data-ppm-compact="1"] {
+  right: 56px;
+}
+
+.ppm-tip {
+  position: fixed;
+  z-index: 2147483647;
+  max-width: 340px;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  background: #1f2328;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  font-family: system-ui, -apple-system, "Segoe UI", "HarmonyOS Sans SC", "Noto Sans SC", Roboto, sans-serif;
+}
